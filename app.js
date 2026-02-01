@@ -22,3 +22,33 @@ const getName = async (id) => {
 getName(2);
 getName(7);
 getName(10);
+
+// -----------------------------------------------------
+const makeJokeButton = document.querySelector("#joke-maker");
+const jokesList = document.querySelector("#jokes");
+const NO_JOKES_MSG = 'No jokes, sorry!';
+const jokeUrl = "https://icanhazdadjoke.com";
+const config = {
+  headers: {
+    Accept: "application/json",
+  },
+};
+
+const getDadJokes = async () => {
+  try {
+    const response = await axios.get(jokeUrl, config);
+    return response.data.joke;
+  } catch (err) {
+    console.log(err);
+    return NO_JOKES_MSG;
+  }
+};
+
+const addNewJoke = async () => {
+  const newJoke = await getDadJokes();
+  const newLi = document.createElement("LI");
+  newLi.append(newJoke);
+  jokesList.append(newLi);
+};
+
+makeJokeButton.addEventListener("click", addNewJoke);
